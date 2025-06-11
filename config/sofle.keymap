@@ -23,7 +23,16 @@
             compatible = "zmk,behavior-tap-dance";
             label = "RT_NAV";
             #binding-cells = <0>;
-            bindings = <&lt 4 RET>;
+            bindings = <&lt 5 RET>;
+        };
+    };
+
+    macros {
+        new_macro: new_macro {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            bindings = <&macro_param_1to1 &mo MACRO_PLACEHOLDER &kp LEFT_ALT>;
+            label = "NEW_MACRO";
         };
     };
 
@@ -45,7 +54,7 @@
 &kp TAB    &kp Q                 &kp W     &kp E     &kp R      &kp T                                         &kp Y      &kp U    &kp I     &kp O      &kp P       &kp LEFT_BRACKET
 &kp CAPS   &kp A                 &kp S     &kp D     &kp F      &kp G                                         &kp H      &kp J    &kp K     &kp L      &kp SEMI    &kp SQT
 &kp ENTER  &kp NON_US_BACKSLASH  &kp Z     &kp X     &kp C      &kp V           &kp K_MUTE    &studio_unlock  &kp B      &kp N    &kp M     &kp COMMA  &kp PERIOD  &kp SLASH
-                                 &kp LGUI  &kp LALT  &kp LCTRL  &kp LEFT_SHIFT  &mo 3         &bs_TAB         &kp SPACE  &rt_NAV  &kp RALT  &kp RGUI
+                                 &kp LGUI  &kp LALT  &kp LCTRL  &kp LEFT_SHIFT  &mo 4         &bs_TAB         &kp SPACE  &rt_NAV  &kp RALT  &kp RGUI
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
@@ -54,11 +63,21 @@
         tab {
             display-name = "Layer 4";
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans             &trans  &trans              &trans     &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LS(LC(PG_UP))  &trans  &kp K_CONTEXT_MENU  &trans     &kp LA(F4)
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LC(LS(TAB))    &trans  &kp LC(TAB)         &kp LG(D)  &kp LC(W)
-&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans             &trans  &trans              &trans     &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans             &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans             &trans        &trans              &trans     &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LS(LC(PG_UP))  &new_macro 2  &kp K_CONTEXT_MENU  &trans     &kp LA(F4)
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LC(LS(TAB))    &trans        &kp LC(TAB)         &kp LG(D)  &kp LC(W)
+&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans             &trans        &trans              &trans     &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans             &trans        &trans
+            >;
+        };
+
+        tab2 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans       &trans  &trans   &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans       &trans  &trans   &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LS(TAB)  &trans  &kp TAB  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans       &trans  &trans   &trans  &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans       &trans  &trans
             >;
         };
 
@@ -96,7 +115,7 @@
 
             bindings = <
 &kp GRAVE  &kp F1           &kp F2       &kp F3                &kp F4                 &kp F5                           &kp F6     &kp F7        &kp F8        &kp F9        &kp F10       &kp F11
-&mo 2      &kp EXCLAMATION  &kp AT_SIGN  &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp AMPERSAND                    &kp N6     &kp N7        &kp N8        &kp N9        &kp MINUS     &kp F12
+&mo 3      &kp EXCLAMATION  &kp AT_SIGN  &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp AMPERSAND                    &kp N6     &kp N7        &kp N8        &kp N9        &kp MINUS     &kp F12
 &trans     &kp HASH         &kp DOLLAR   &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp GRAVE                        &kp CARET  &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp PLUS      &kp PIPE
 &trans     &kp PERCENT      &kp CARET    &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp TILDE      &trans    &trans  &kp LBKT   &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp ASTERISK  &kp SLASH
                             &trans       &trans                &trans                 &trans         &trans    &trans  &trans     &kp N0        &kp PERIOD    &kp EQUAL
