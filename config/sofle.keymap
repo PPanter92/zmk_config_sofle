@@ -11,6 +11,22 @@
 &nice_view_spi { cs-gpios = <&pro_micro 0 GPIO_ACTIVE_HIGH>; };
 
 / {
+    behaviors {
+        bs_TAB: bs_TAB {
+            compatible = "zmk,behavior-tap-dance";
+            label = "BS_TAB";
+            #binding-cells = <0>;
+            bindings = <&lt 1 BACKSPACE>;
+        };
+
+        rt_NAV: rt_NAV {
+            compatible = "zmk,behavior-tap-dance";
+            label = "RT_NAV";
+            #binding-cells = <0>;
+            bindings = <&lt 4 RET>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -25,11 +41,43 @@
             //               | GUI | ALT  | CTRL | LOWER|  ENTER |  | SPACE | RAISE| CTRL  | ALT   | GUI  |
 
             bindings = <
-&kp GRAVE  &kp N1                &kp N2    &kp N3    &kp N4     &kp N5                                        &kp N6     &kp N7     &kp N8    &kp N9     &kp N0      &kp MINUS
-&kp TAB    &kp Q                 &kp W     &kp E     &kp R      &kp T                                         &kp Y      &kp U      &kp I     &kp O      &kp P       &kp LEFT_BRACKET
-&kp CAPS   &kp A                 &kp S     &kp D     &kp F      &kp G                                         &kp H      &kp J      &kp K     &kp L      &kp SEMI    &kp SQT
-&kp ENTER  &kp NON_US_BACKSLASH  &kp Z     &kp X     &kp C      &kp V           &kp K_MUTE    &studio_unlock  &kp B      &kp N      &kp M     &kp COMMA  &kp PERIOD  &kp SLASH
-                                 &kp LGUI  &kp LALT  &kp LCTRL  &kp LEFT_SHIFT  &mo 1         &mo 2           &kp SPACE  &kp RCTRL  &kp RALT  &kp RGUI
+&kp GRAVE  &kp N1                &kp N2    &kp N3    &kp N4     &kp N5                                        &kp N6     &kp N7   &kp N8    &kp N9     &kp N0      &kp MINUS
+&kp TAB    &kp Q                 &kp W     &kp E     &kp R      &kp T                                         &kp Y      &kp U    &kp I     &kp O      &kp P       &kp LEFT_BRACKET
+&kp CAPS   &kp A                 &kp S     &kp D     &kp F      &kp G                                         &kp H      &kp J    &kp K     &kp L      &kp SEMI    &kp SQT
+&kp ENTER  &kp NON_US_BACKSLASH  &kp Z     &kp X     &kp C      &kp V           &kp K_MUTE    &studio_unlock  &kp B      &kp N    &kp M     &kp COMMA  &kp PERIOD  &kp SLASH
+                                 &kp LGUI  &kp LALT  &kp LCTRL  &kp LEFT_SHIFT  &mo 3         &bs_TAB         &kp SPACE  &rt_NAV  &kp RALT  &kp RGUI
+            >;
+
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+        };
+
+        tab {
+            display-name = "Layer 4";
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans             &trans  &trans              &trans     &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LS(LC(PG_UP))  &trans  &kp K_CONTEXT_MENU  &trans     &kp LA(F4)
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LC(LS(TAB))    &trans  &kp LC(TAB)         &kp LG(D)  &kp LC(W)
+&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans             &trans  &trans              &trans     &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans             &trans  &trans
+            >;
+        };
+
+        raise_layer {
+            display-name = "Layer 2";
+
+            // ------------------------------------------------------------------------------------------------------------
+            // |BTCLR| BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |       |
+            // |     | INS  | PSCR | GUI   |       |      |                | PGUP |      |       |      |       |       |
+            // |     | ALT  | CTRL | SHIFT |       | CAPS |                |  <-  |   v  |   ^   |  ->  |  DEL  | BKSPC |
+            // |     | UNDO | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |       |
+            //              |      |       |       |      |      |  |      |      |      |       |      |
+
+            bindings = <
+&bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                    &trans         &trans    &trans  &trans     &trans   &trans
+&trans      &kp INS       &kp PSCRN     &kp K_CMENU   &trans        &trans                          &kp PG_UP      &trans    &trans  &trans     &kp N0   &trans
+&trans      &kp LALT      &kp LCTRL     &kp LSHFT     &trans        &kp CLCK                        &kp LEFT       &kp DOWN  &kp UP  &kp RIGHT  &kp DEL  &kp BSPC
+&trans      &kp K_UNDO    &kp K_CUT     &kp K_COPY    &kp K_PASTE   &trans        &trans    &trans  &kp PAGE_DOWN  &trans    &trans  &trans     &trans   &trans
+                          &trans        &trans        &trans        &trans        &trans    &trans  &trans         &trans    &trans  &trans
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
@@ -57,46 +105,14 @@
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
 
-        raise_layer {
-            display-name = "Layer 2";
-
-            // ------------------------------------------------------------------------------------------------------------
-            // |BTCLR| BT1  | BT2  |  BT3  |  BT4  |  BT5 |                |      |      |       |      |       |       |
-            // |     | INS  | PSCR | GUI   |       |      |                | PGUP |      |       |      |       |       |
-            // |     | ALT  | CTRL | SHIFT |       | CAPS |                |  <-  |   v  |   ^   |  ->  |  DEL  | BKSPC |
-            // |     | UNDO | CUT  | COPY  | PASTE |      |      |  |      |      |      |       |      |       |       |
-            //              |      |       |       |      |      |  |      |      |      |       |      |
-
-            bindings = <
-&bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                    &trans         &trans    &trans  &trans     &trans   &trans
-&trans      &kp INS       &kp PSCRN     &kp K_CMENU   &trans        &trans                          &kp PG_UP      &trans    &trans  &trans     &kp N0   &trans
-&trans      &kp LALT      &kp LCTRL     &kp LSHFT     &trans        &kp CLCK                        &kp LEFT       &kp DOWN  &kp UP  &kp RIGHT  &kp DEL  &kp BSPC
-&trans      &kp K_UNDO    &kp K_CUT     &kp K_COPY    &kp K_PASTE   &trans        &trans    &trans  &kp PAGE_DOWN  &trans    &trans  &trans     &trans   &trans
-                          &trans        &trans        &trans        &trans        &trans    &trans  &trans         &trans    &trans  &trans
-            >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-        };
-
-        layer_3 {
+        nav {
             display-name = "Layer 3";
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
-            >;
-        };
-
-        layer_4 {
-            display-name = "Layer 4";
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans        &trans       &trans         &trans    &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LC(LEFT)  &kp UP       &kp LC(RIGHT)  &trans    &trans
+&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &kp LEFT      &kp LS(TAB)  &kp RIGHT      &kp DOWN  &kp TAB
+&trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans        &trans       &trans         &trans    &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans        &trans       &trans
             >;
         };
     };
